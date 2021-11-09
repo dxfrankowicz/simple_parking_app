@@ -56,11 +56,26 @@ mixin _$MapStore on _MapStoreBase, Store {
     });
   }
 
+  final _$mapTypeAtom = Atom(name: '_MapStoreBase.mapType');
+
+  @override
+  MapType get mapType {
+    _$mapTypeAtom.reportRead();
+    return super.mapType;
+  }
+
+  @override
+  set mapType(MapType value) {
+    _$mapTypeAtom.reportWrite(value, super.mapType, () {
+      super.mapType = value;
+    });
+  }
+
   final _$getLocationAndInitAsyncAction =
       AsyncAction('_MapStoreBase.getLocationAndInit');
 
   @override
-  Future getLocationAndInit() {
+  Future<dynamic> getLocationAndInit() {
     return _$getLocationAndInitAsyncAction
         .run(() => super.getLocationAndInit());
   }
@@ -74,12 +89,27 @@ mixin _$MapStore on _MapStoreBase, Store {
         .run(() => super._goToTheLocation(cameraPosition));
   }
 
+  final _$_MapStoreBaseActionController =
+      ActionController(name: '_MapStoreBase');
+
+  @override
+  dynamic switchMapType() {
+    final _$actionInfo = _$_MapStoreBaseActionController.startAction(
+        name: '_MapStoreBase.switchMapType');
+    try {
+      return super.switchMapType();
+    } finally {
+      _$_MapStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 controller: ${controller},
 isWaitingForLocalization: ${isWaitingForLocalization},
-cameraPosition: ${cameraPosition}
+cameraPosition: ${cameraPosition},
+mapType: ${mapType}
     ''';
   }
 }

@@ -31,6 +31,9 @@ abstract class _MapStoreBase with Store {
   @observable
   CameraPosition cameraPosition = _defaultPosition;
 
+  @observable
+  MapType mapType = MapType.normal;
+
   @action
   Future getLocationAndInit() async {
     isWaitingForLocalization = true;
@@ -49,5 +52,10 @@ abstract class _MapStoreBase with Store {
   Future<void> _goToTheLocation(CameraPosition cameraPosition) async {
     final GoogleMapController _controller = await controller.future;
     _controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
+
+  @action
+  switchMapType() {
+    mapType = mapType == MapType.normal ? MapType.hybrid : MapType.normal;
   }
 }
