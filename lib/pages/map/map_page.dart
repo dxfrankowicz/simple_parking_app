@@ -7,6 +7,8 @@ import 'package:simple_parking_app/components/base_scaffold.dart';
 import 'package:simple_parking_app/generated/l10n.dart';
 import 'package:simple_parking_app/pages/map/map_store.dart';
 import 'package:simple_parking_app/utils/di/di.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:simple_parking_app/utils/log/log.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -15,6 +17,7 @@ class MapPage extends StatefulWidget {
 
 class MapPageState extends State<MapPage> {
   MapStore mapStore = getIt<MapStore>();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -27,44 +30,59 @@ class MapPageState extends State<MapPage> {
     return Observer(builder: (_) {
       return PARKINGScaffold.get(
         context,
-        body: GoogleMap(
-          mapType: mapStore.mapType,
-          initialCameraPosition: mapStore.cameraPosition,
-          onMapCreated: (GoogleMapController controller) {
-            mapStore.controller.complete(controller);
-          },
-        ),
-        floatingActionButton: Stack(
+        body: Stack(
           children: <Widget>[
+            StreamBuilder<QuerySnapshot>(
+              stream: firestore.collection('locations').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData)
+                  mapStore.updateMarkers(snapshot.data!.docs);
+                else
+                  log.info("No data");
+                return Observer(
+                  builder: (_) {
+                    return GoogleMap(
+                      mapType: mapStore.mapType,
+                      initialCameraPosition: mapStore.cameraPosition,
+                      markers: mapStore.markers,
+                      onMapCreated: (GoogleMapController controller) {
+                        mapStore.controller.complete(controller);
+                      },
+                    );
+                  },
+                );
+              },
+            ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: FloatingActionButton.extended(
-                onPressed: () {},
-                label: AutoSizeText(S.current.addParkingLocation, maxLines: 1),
-                icon: Icon(Icons.add_location_alt_outlined),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: FloatingActionButton.extended(
+                  onPressed: () {},
+                  label: AutoSizeText(S.current.addParkingLocation, maxLines: 1),
+                  icon: Icon(Icons.add_location_alt_outlined),
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: kToolbarHeight * 2),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Column(
-                  children: [
-                    FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      child: Icon(Icons.my_location_rounded, color: Colors.black),
-                      onPressed: () => mapStore.getLocationAndInit.call(),
-                    ),
-                    SizedBox(height: 8),
-                    FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      child: Icon(Icons.layers, color: Colors.black),
-                      onPressed: () => mapStore.switchMapType(),
-                    ),
-                  ],
-                ),
+            Positioned(
+              top: 12,
+              right: 12,
+              child: Column(
+                children: [
+                  FloatingActionButton(
+                    backgroundColor: Colors.white,
+                    materialTapTargetSize: MaterialTapTargetSize.padded,
+                    child: Icon(Icons.my_location_rounded, color: Colors.black),
+                    onPressed: () => mapStore.getLocationAndInit.call(),
+                  ),
+                  SizedBox(height: 8),
+                  FloatingActionButton(
+                    backgroundColor: Colors.white,
+                    materialTapTargetSize: MaterialTapTargetSize.padded,
+                    child: Icon(Icons.layers, color: Colors.black),
+                    onPressed: () => mapStore.switchMapType(),
+                  ),
+                ],
               ),
             ),
           ],

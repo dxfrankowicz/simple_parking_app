@@ -71,6 +71,21 @@ mixin _$MapStore on _MapStoreBase, Store {
     });
   }
 
+  final _$markersAtom = Atom(name: '_MapStoreBase.markers');
+
+  @override
+  ObservableSet<Marker> get markers {
+    _$markersAtom.reportRead();
+    return super.markers;
+  }
+
+  @override
+  set markers(ObservableSet<Marker> value) {
+    _$markersAtom.reportWrite(value, super.markers, () {
+      super.markers = value;
+    });
+  }
+
   final _$getLocationAndInitAsyncAction =
       AsyncAction('_MapStoreBase.getLocationAndInit');
 
@@ -78,6 +93,15 @@ mixin _$MapStore on _MapStoreBase, Store {
   Future<dynamic> getLocationAndInit() {
     return _$getLocationAndInitAsyncAction
         .run(() => super.getLocationAndInit());
+  }
+
+  final _$getCurrentLocationAsyncAction =
+      AsyncAction('_MapStoreBase.getCurrentLocation');
+
+  @override
+  Future<LocationData?> getCurrentLocation() {
+    return _$getCurrentLocationAsyncAction
+        .run(() => super.getCurrentLocation());
   }
 
   final _$_goToTheLocationAsyncAction =
@@ -104,12 +128,35 @@ mixin _$MapStore on _MapStoreBase, Store {
   }
 
   @override
+  dynamic addMarker(ParkingLocationModel parkingLocationModel) {
+    final _$actionInfo = _$_MapStoreBaseActionController.startAction(
+        name: '_MapStoreBase.addMarker');
+    try {
+      return super.addMarker(parkingLocationModel);
+    } finally {
+      _$_MapStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic updateMarkers(List<DocumentSnapshot<Object?>> documentList) {
+    final _$actionInfo = _$_MapStoreBaseActionController.startAction(
+        name: '_MapStoreBase.updateMarkers');
+    try {
+      return super.updateMarkers(documentList);
+    } finally {
+      _$_MapStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
 isWaitingForLocalization: ${isWaitingForLocalization},
 cameraPosition: ${cameraPosition},
-mapType: ${mapType}
+mapType: ${mapType},
+markers: ${markers}
     ''';
   }
 }
