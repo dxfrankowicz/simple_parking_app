@@ -8,6 +8,7 @@ import 'package:mobx/mobx.dart';
 import 'package:simple_parking_app/models/parking_location.dart';
 import 'package:simple_parking_app/utils/location_utils.dart';
 import 'package:simple_parking_app/utils/log/log.dart';
+import 'package:flutter/material.dart';
 
 part 'map_store.g.dart';
 
@@ -63,7 +64,6 @@ abstract class _MapStoreBase with Store {
     return locationData;
   }
 
-
   @action
   Future<void> _goToTheLocation(CameraPosition cameraPosition) async {
     final GoogleMapController _controller = await controller.future;
@@ -76,11 +76,13 @@ abstract class _MapStoreBase with Store {
   }
 
   @action
-  addMarker(ParkingLocationModel parkingLocationModel) {
+  addMarker(ParkingLocationModel parkingLocationModel) async {
+    var icon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/parking_marker.png');
     var marker = Marker(
         position: LatLng(parkingLocationModel.geolocation!.latitude,
             parkingLocationModel.geolocation!.longitude),
-        icon: BitmapDescriptor.defaultMarker,
+        icon: icon,
         infoWindow: InfoWindow(title: parkingLocationModel.name),
         markerId: MarkerId((markers.length + 1).toString()));
     markers.add(marker);
