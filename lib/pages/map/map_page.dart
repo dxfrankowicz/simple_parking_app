@@ -53,15 +53,13 @@ class MapPageState extends State<MapPage> {
                 );
               },
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: FloatingActionButton.extended(
-                  onPressed: () {},
-                  label: AutoSizeText(S.current.addParkingLocation, maxLines: 1),
-                  icon: Icon(Icons.add_location_alt_outlined),
-                ),
+            Positioned(
+              top: 12,
+              left: 12,
+              child: FloatingActionButton(
+                materialTapTargetSize: MaterialTapTargetSize.padded,
+                child: Icon(Icons.add_location_alt_outlined, color: Colors.white),
+                onPressed: () {},
               ),
             ),
             Positioned(
