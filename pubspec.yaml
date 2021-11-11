@@ -30,6 +30,10 @@ dependencies:
   google_maps_flutter: ^2.1.0
   auto_size_text:
   logger:
+  json_annotation: ^4.3.0
+  geoflutterfire:
+  firebase_core:
+  cloud_firestore:
 # MobX
   mobx: ^2.0.4
   flutter_mobx: ^2.0.2
@@ -40,6 +44,7 @@ dependencies:
 
 dev_dependencies:
   build_runner:
+  json_serializable:
   flutter_test:
     sdk: flutter
 # MobX

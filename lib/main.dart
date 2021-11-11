@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:simple_parking_app/pages/map/map_page.dart';
@@ -12,6 +13,7 @@ void main() {
 void startApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   di.init();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 

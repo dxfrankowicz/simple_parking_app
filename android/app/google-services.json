@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "122267812824",
+    "project_id": "steam-idiom-331514",
+    "storage_bucket": "steam-idiom-331514.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122267812824:android:ad3b3f9155275fef37e8ad",
+        "android_client_info": {
+          "package_name": "pl.damian.frankowicz.simple_parking_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122267812824-6j77vrl59v2l98kip40rhenjft26o6g2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByVbalr-Il_hRlbqR7vnqbU26TcyvqH9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "122267812824-6j77vrl59v2l98kip40rhenjft26o6g2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
