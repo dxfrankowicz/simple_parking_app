@@ -1,0 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class FirestoreService {
+
+  static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  static Stream<QuerySnapshot<Object?>> getStream(){
+    return _firestore.collection('locations').snapshots();
+  }
+}

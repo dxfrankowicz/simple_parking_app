@@ -8,6 +8,7 @@ import 'package:simple_parking_app/generated/l10n.dart';
 import 'package:simple_parking_app/pages/map/map_store.dart';
 import 'package:simple_parking_app/utils/di/di.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:simple_parking_app/utils/firestore/firestore_service.dart';
 import 'package:simple_parking_app/utils/log/log.dart';
 
 class MapPage extends StatefulWidget {
@@ -17,7 +18,6 @@ class MapPage extends StatefulWidget {
 
 class MapPageState extends State<MapPage> {
   MapStore mapStore = getIt<MapStore>();
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class MapPageState extends State<MapPage> {
         body: Stack(
           children: <Widget>[
             StreamBuilder<QuerySnapshot>(
-              stream: firestore.collection('locations').snapshots(),
+              stream: FirestoreService.getStream(),
               builder: (context, snapshot) {
                 if (snapshot.hasData)
                   mapStore.updateMarkers(snapshot.data!.docs);
