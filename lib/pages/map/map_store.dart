@@ -56,6 +56,9 @@ abstract class _MapStoreBase with Store {
   @observable
   bool addLocationView = false;
 
+  @observable
+  bool addLocationNameEmpty = false;
+
   @action
   Future getLocationAndInit() async {
     isWaitingForLocalization = true;
@@ -102,6 +105,7 @@ abstract class _MapStoreBase with Store {
   @action
   setNameForNewLocation(String? x) {
     addLocationModel.name = x;
+    validateNewLocationName();
   }
 
   @action
@@ -150,12 +154,22 @@ abstract class _MapStoreBase with Store {
   }
 
   @action
+  bool validateNewLocationName() {
+    if (addLocationModel.name == null || (addLocationModel.name?.isEmpty ?? true))
+      addLocationNameEmpty = true;
+    else
+      addLocationNameEmpty = false;
+    return addLocationNameEmpty;
+  }
+
+  @action
   addNewLocation() async {
-    FirestoreService.addNewParkingLocation(ParkingLocationModel(
-        addLocationModel.name,
-        addLocationModel.description,
-        addLocationModel.ranking,
-        GeoPoint(
-            addLocationMarker.position.latitude, addLocationMarker.position.longitude)));
+    if (validateNewLocationName())
+      FirestoreService.addNewParkingLocation(ParkingLocationModel(
+          addLocationModel.name,
+          addLocationModel.description,
+          addLocationModel.ranking,
+          GeoPoint(addLocationMarker.position.latitude,
+              addLocationMarker.position.longitude)));
   }
 }

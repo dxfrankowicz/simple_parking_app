@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/scheduler/ticker.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:simple_parking_app/components/base_scaffold.dart';
@@ -21,27 +20,9 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
   MapStore mapStore = getIt<MapStore>();
   double bottomModalHeight = 0;
 
-  late AnimationController _controller;
-  late Animation _animation;
-
-  FocusNode _focusNode = FocusNode();
-
   @override
   void initState() {
     mapStore.getLocationAndInit();
-    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    _animation = Tween(begin: 0, end: 1250.0).animate(_controller)
-      ..addListener(() {
-        setState(() {});
-      });
-
-    _focusNode.addListener(() {
-      if (_focusNode.hasFocus) {
-        _controller.forward();
-      } else {
-        _controller.reverse();
-      }
-    });
     Future.delayed(Duration.zero)
         .then((value) => bottomModalHeight = MediaQuery.of(context).size.height / 8);
     super.initState();
@@ -101,7 +82,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                   mapStore.switchToAddLocationView();
                   setState(() {
                     if (mapStore.addLocationView)
-                      bottomModalHeight = MediaQuery.of(context).size.height / 2.5;
+                      bottomModalHeight = MediaQuery.of(context).size.height / 2.25;
                     else
                       bottomModalHeight = MediaQuery.of(context).size.height / 8;
                   });
@@ -156,7 +137,6 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                         child: TextField(
                           maxLines: 1,
                           onChanged: mapStore.setNameForNewLocation,
-                          focusNode: _focusNode,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -182,12 +162,14 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                           TextField(
                             maxLines: 1,
                             onChanged: mapStore.setNameForNewLocation,
-                            focusNode: _focusNode,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 filled: true,
+                                errorText: mapStore.addLocationNameEmpty
+                                    ? S.current.newLocationValidationEmptyName
+                                    : null,
                                 hintStyle: TextStyle(color: Colors.grey[800]),
                                 labelText: S.current.name,
                                 fillColor: Colors.white70),
@@ -207,25 +189,25 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                           ),
                           SizedBox(height: 8),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(
-                              5,
-                              (index) => GestureDetector(
-                                child: Icon(
-                                    (mapStore.addLocationModel.ranking ?? 0) >= index + 1
-                                        ? Icons.star
-                                        : Icons.star_border_rounded,
-                                    color: (mapStore.addLocationModel.ranking ?? 0) >=
-                                            index + 1
-                                        ? Colors.amber
-                                        : Colors.black,
-                                    size: 40),
-                                onTap: () {
-                                  mapStore.setRankForNewLocation(index + 1);
-                                },
-                              ),
-                            )
-                          ),
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: List.generate(
+                                5,
+                                (index) => GestureDetector(
+                                  child: Icon(
+                                      (mapStore.addLocationModel.ranking ?? 0) >=
+                                              index + 1
+                                          ? Icons.star
+                                          : Icons.star_border_rounded,
+                                      color: (mapStore.addLocationModel.ranking ?? 0) >=
+                                              index + 1
+                                          ? Colors.amber
+                                          : Colors.black,
+                                      size: 40),
+                                  onTap: () {
+                                    mapStore.setRankForNewLocation(index + 1);
+                                  },
+                                ),
+                              )),
                           Container(
                             width: double.infinity,
                             height: 50,

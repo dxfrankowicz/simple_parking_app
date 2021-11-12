@@ -109,6 +109,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Name must not be empty`
+  String get newLocationValidationEmptyName {
+    return Intl.message(
+      'Name must not be empty',
+      name: 'newLocationValidationEmptyName',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

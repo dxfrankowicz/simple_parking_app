@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Add parking location"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
         "name": MessageLookupByLibrary.simpleMessage("Name"),
+        "newLocationValidationEmptyName":
+            MessageLookupByLibrary.simpleMessage("Name must not be empty"),
         "saveLocation": MessageLookupByLibrary.simpleMessage("Save location"),
         "search": MessageLookupByLibrary.simpleMessage("Search")
       };

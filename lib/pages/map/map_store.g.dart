@@ -131,6 +131,23 @@ mixin _$MapStore on _MapStoreBase, Store {
     });
   }
 
+  final _$addLocationNameEmptyAtom =
+      Atom(name: '_MapStoreBase.addLocationNameEmpty');
+
+  @override
+  bool get addLocationNameEmpty {
+    _$addLocationNameEmptyAtom.reportRead();
+    return super.addLocationNameEmpty;
+  }
+
+  @override
+  set addLocationNameEmpty(bool value) {
+    _$addLocationNameEmptyAtom.reportWrite(value, super.addLocationNameEmpty,
+        () {
+      super.addLocationNameEmpty = value;
+    });
+  }
+
   final _$getLocationAndInitAsyncAction =
       AsyncAction('_MapStoreBase.getLocationAndInit');
 
@@ -200,7 +217,7 @@ mixin _$MapStore on _MapStoreBase, Store {
   }
 
   @override
-  void setNameForNewLocation(String? x) {
+  dynamic setNameForNewLocation(String? x) {
     final _$actionInfo = _$_MapStoreBaseActionController.startAction(
         name: '_MapStoreBase.setNameForNewLocation');
     try {
@@ -211,7 +228,7 @@ mixin _$MapStore on _MapStoreBase, Store {
   }
 
   @override
-  void setDescriptionForNewLocation(String? x) {
+  dynamic setDescriptionForNewLocation(String? x) {
     final _$actionInfo = _$_MapStoreBaseActionController.startAction(
         name: '_MapStoreBase.setDescriptionForNewLocation');
     try {
@@ -255,6 +272,17 @@ mixin _$MapStore on _MapStoreBase, Store {
   }
 
   @override
+  bool validateNewLocationName() {
+    final _$actionInfo = _$_MapStoreBaseActionController.startAction(
+        name: '_MapStoreBase.validateNewLocationName');
+    try {
+      return super.validateNewLocationName();
+    } finally {
+      _$_MapStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
@@ -264,7 +292,8 @@ mapType: ${mapType},
 markers: ${markers},
 addLocationMarker: ${addLocationMarker},
 addLocationModel: ${addLocationModel},
-addLocationView: ${addLocationView}
+addLocationView: ${addLocationView},
+addLocationNameEmpty: ${addLocationNameEmpty}
     ''';
   }
 }

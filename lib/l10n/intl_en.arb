@@ -4,5 +4,6 @@
   "description": "Description",
   "addNewLocation": "Add mew location",
   "saveLocation": "Save location",
-  "search": "Search"
+  "search": "Search",
+  "newLocationValidationEmptyName": "Name must not be empty"
 }
