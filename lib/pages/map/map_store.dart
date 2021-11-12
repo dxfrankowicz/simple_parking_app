@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:logging/logging.dart';
@@ -10,6 +11,7 @@ import 'package:simple_parking_app/utils/firestore/firestore_service.dart';
 import 'package:simple_parking_app/utils/location_utils.dart';
 import 'package:simple_parking_app/utils/log/log.dart';
 import 'package:flutter/material.dart';
+import 'package:clippy_flutter/clippy_flutter.dart';
 
 part 'map_store.g.dart';
 
@@ -120,25 +122,36 @@ abstract class _MapStoreBase with Store {
     addLocationModel = model;
   }
 
+  ParkingLocationModel? selectedParkingLocation;
+
   @action
-  addMarker(ParkingLocationModel parkingLocationModel) async {
+  addMarker(ParkingLocationModel parkingLocationModel,
+      {CustomInfoWindowController? customInfoWindowController,
+      Function(ParkingLocationModel model)? showInfoView}) async {
     var icon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/parking_marker.png');
     var marker = Marker(
         position: LatLng(parkingLocationModel.geolocation!.latitude,
             parkingLocationModel.geolocation!.longitude),
         icon: icon,
-        infoWindow: InfoWindow(title: parkingLocationModel.name),
+        onTap: () {
+          showInfoView!.call(parkingLocationModel);
+        },
         markerId: MarkerId((markers.length + 1).toString()));
     markers.add(marker);
   }
 
   @action
-  updateMarkers(List<DocumentSnapshot> documentList) {
+  updateMarkers(
+      List<DocumentSnapshot> documentList,
+      CustomInfoWindowController? customInfoWindowController,
+      Function(ParkingLocationModel model)? showInfoView) {
     markers.clear();
     documentList.forEach((DocumentSnapshot document) {
       try {
-        addMarker(ParkingLocationModel.fromJson(document.data() as Map<String, dynamic>));
+        addMarker(ParkingLocationModel.fromJson(document.data() as Map<String, dynamic>),
+            customInfoWindowController: customInfoWindowController,
+            showInfoView: showInfoView);
       } catch (e) {
         log.error("Could not add marker: ${document.data()}");
       }

@@ -178,9 +178,13 @@ mixin _$MapStore on _MapStoreBase, Store {
   final _$addMarkerAsyncAction = AsyncAction('_MapStoreBase.addMarker');
 
   @override
-  Future addMarker(ParkingLocationModel parkingLocationModel) {
-    return _$addMarkerAsyncAction
-        .run(() => super.addMarker(parkingLocationModel));
+  Future addMarker(ParkingLocationModel parkingLocationModel,
+      {CustomInfoWindowController? customInfoWindowController,
+      Function(ParkingLocationModel)? showInfoView}) {
+    return _$addMarkerAsyncAction.run(() => super.addMarker(
+        parkingLocationModel,
+        customInfoWindowController: customInfoWindowController,
+        showInfoView: showInfoView));
   }
 
   final _$addNewLocationAsyncAction =
@@ -250,11 +254,15 @@ mixin _$MapStore on _MapStoreBase, Store {
   }
 
   @override
-  dynamic updateMarkers(List<DocumentSnapshot<Object?>> documentList) {
+  dynamic updateMarkers(
+      List<DocumentSnapshot<Object?>> documentList,
+      CustomInfoWindowController? customInfoWindowController,
+      Function(ParkingLocationModel)? showInfoView) {
     final _$actionInfo = _$_MapStoreBaseActionController.startAction(
         name: '_MapStoreBase.updateMarkers');
     try {
-      return super.updateMarkers(documentList);
+      return super.updateMarkers(
+          documentList, customInfoWindowController, showInfoView);
     } finally {
       _$_MapStoreBaseActionController.endAction(_$actionInfo);
     }

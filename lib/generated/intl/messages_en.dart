@@ -29,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "newLocationValidationEmptyName":
             MessageLookupByLibrary.simpleMessage("Name must not be empty"),
+        "noData": MessageLookupByLibrary.simpleMessage("No data"),
         "saveLocation": MessageLookupByLibrary.simpleMessage("Save location"),
         "search": MessageLookupByLibrary.simpleMessage("Search")
       };
