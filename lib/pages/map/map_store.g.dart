@@ -86,6 +86,51 @@ mixin _$MapStore on _MapStoreBase, Store {
     });
   }
 
+  final _$addLocationMarkerAtom = Atom(name: '_MapStoreBase.addLocationMarker');
+
+  @override
+  Marker get addLocationMarker {
+    _$addLocationMarkerAtom.reportRead();
+    return super.addLocationMarker;
+  }
+
+  @override
+  set addLocationMarker(Marker value) {
+    _$addLocationMarkerAtom.reportWrite(value, super.addLocationMarker, () {
+      super.addLocationMarker = value;
+    });
+  }
+
+  final _$addLocationModelAtom = Atom(name: '_MapStoreBase.addLocationModel');
+
+  @override
+  ParkingLocationModel get addLocationModel {
+    _$addLocationModelAtom.reportRead();
+    return super.addLocationModel;
+  }
+
+  @override
+  set addLocationModel(ParkingLocationModel value) {
+    _$addLocationModelAtom.reportWrite(value, super.addLocationModel, () {
+      super.addLocationModel = value;
+    });
+  }
+
+  final _$addLocationViewAtom = Atom(name: '_MapStoreBase.addLocationView');
+
+  @override
+  bool get addLocationView {
+    _$addLocationViewAtom.reportRead();
+    return super.addLocationView;
+  }
+
+  @override
+  set addLocationView(bool value) {
+    _$addLocationViewAtom.reportWrite(value, super.addLocationView, () {
+      super.addLocationView = value;
+    });
+  }
+
   final _$getLocationAndInitAsyncAction =
       AsyncAction('_MapStoreBase.getLocationAndInit');
 
@@ -113,6 +158,22 @@ mixin _$MapStore on _MapStoreBase, Store {
         .run(() => super._goToTheLocation(cameraPosition));
   }
 
+  final _$addMarkerAsyncAction = AsyncAction('_MapStoreBase.addMarker');
+
+  @override
+  Future addMarker(ParkingLocationModel parkingLocationModel) {
+    return _$addMarkerAsyncAction
+        .run(() => super.addMarker(parkingLocationModel));
+  }
+
+  final _$addNewLocationAsyncAction =
+      AsyncAction('_MapStoreBase.addNewLocation');
+
+  @override
+  Future addNewLocation() {
+    return _$addNewLocationAsyncAction.run(() => super.addNewLocation());
+  }
+
   final _$_MapStoreBaseActionController =
       ActionController(name: '_MapStoreBase');
 
@@ -128,11 +189,44 @@ mixin _$MapStore on _MapStoreBase, Store {
   }
 
   @override
-  dynamic addMarker(ParkingLocationModel parkingLocationModel) {
+  dynamic switchToAddLocationView() {
     final _$actionInfo = _$_MapStoreBaseActionController.startAction(
-        name: '_MapStoreBase.addMarker');
+        name: '_MapStoreBase.switchToAddLocationView');
     try {
-      return super.addMarker(parkingLocationModel);
+      return super.switchToAddLocationView();
+    } finally {
+      _$_MapStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setNameForNewLocation(String? x) {
+    final _$actionInfo = _$_MapStoreBaseActionController.startAction(
+        name: '_MapStoreBase.setNameForNewLocation');
+    try {
+      return super.setNameForNewLocation(x);
+    } finally {
+      _$_MapStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setDescriptionForNewLocation(String? x) {
+    final _$actionInfo = _$_MapStoreBaseActionController.startAction(
+        name: '_MapStoreBase.setDescriptionForNewLocation');
+    try {
+      return super.setDescriptionForNewLocation(x);
+    } finally {
+      _$_MapStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setRankForNewLocation(int? x) {
+    final _$actionInfo = _$_MapStoreBaseActionController.startAction(
+        name: '_MapStoreBase.setRankForNewLocation');
+    try {
+      return super.setRankForNewLocation(x);
     } finally {
       _$_MapStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -150,13 +244,27 @@ mixin _$MapStore on _MapStoreBase, Store {
   }
 
   @override
+  dynamic updateAddLocationMarker(CameraPosition position) {
+    final _$actionInfo = _$_MapStoreBaseActionController.startAction(
+        name: '_MapStoreBase.updateAddLocationMarker');
+    try {
+      return super.updateAddLocationMarker(position);
+    } finally {
+      _$_MapStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 controller: ${controller},
 isWaitingForLocalization: ${isWaitingForLocalization},
 cameraPosition: ${cameraPosition},
 mapType: ${mapType},
-markers: ${markers}
+markers: ${markers},
+addLocationMarker: ${addLocationMarker},
+addLocationModel: ${addLocationModel},
+addLocationView: ${addLocationView}
     ''';
   }
 }

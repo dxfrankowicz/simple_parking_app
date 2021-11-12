@@ -12,6 +12,7 @@ class ParkingLocationModel {
   GeoPoint? geolocation;
 
   ParkingLocationModel(this.name, this.description, this.ranking, this.geolocation);
+  ParkingLocationModel.empty();
 
   static GeoPoint? getGeoPoint(GeoPoint? value) => value;
 
