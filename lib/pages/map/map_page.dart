@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/cupertino.dart';
@@ -92,8 +94,9 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                       return GoogleMap(
                         padding: EdgeInsets.only(bottom: bottomModalHeight!),
                         mapType: mapStore.mapType,
-                        mapToolbarEnabled: true,
-                        myLocationButtonEnabled: false,
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: true,
+                        zoomControlsEnabled: false,
                         initialCameraPosition: mapStore.cameraPosition,
                         markers: mapStore.addLocationView
                             ? {mapStore.addLocationMarker}
@@ -143,24 +146,14 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                 ),
               ),
               Positioned(
-                top: 12,
-                right: 12,
-                child: Column(
-                  children: [
-                    FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      child: Icon(Icons.my_location_rounded, color: Colors.black),
-                      onPressed: () => mapStore.getLocationAndInit.call(),
-                    ),
-                    SizedBox(height: 8),
-                    FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      child: Icon(Icons.layers, color: Colors.black),
-                      onPressed: () => mapStore.switchMapType(),
-                    ),
-                  ],
+                top: Platform.isIOS ? 12 : null,
+                bottom: Platform.isIOS ? null : 12 + bottomModalHeight!,
+                right: 8,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                  child: Icon(Icons.layers, color: Colors.black),
+                  onPressed: () => mapStore.switchMapType(),
                 ),
               ),
             ],
