@@ -229,7 +229,7 @@ mixin _$MapStore on _MapStoreBase, Store {
   @override
   dynamic switchAddLocationView() {
     final _$actionInfo = _$_MapStoreBaseActionController.startAction(
-        name: '_MapStoreBase.switchToAddLocationView');
+        name: '_MapStoreBase.switchAddLocationView');
     try {
       return super.switchAddLocationView();
     } finally {
@@ -272,7 +272,7 @@ mixin _$MapStore on _MapStoreBase, Store {
 
   @override
   dynamic updateMarkers(
-      List<DocumentSnapshot<Object?>> documentList,
+      List<DocumentSnapshot> documentList,
       CustomInfoWindowController customInfoWindowController,
       dynamic Function(ParkingLocationModel) showInfoView) {
     final _$actionInfo = _$_MapStoreBaseActionController.startAction(
