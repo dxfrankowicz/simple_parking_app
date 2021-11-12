@@ -6,7 +6,7 @@ class FirestoreService {
   static final CollectionReference _locationsCollection =
       _firestore.collection('locations');
 
-  static Stream<QuerySnapshot<Object?>> getStream() {
+  static Stream<QuerySnapshot> getStream() {
     return _locationsCollection.snapshots();
   }
 
