@@ -88,6 +88,8 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                       return GoogleMap(
                         padding: EdgeInsets.only(bottom: bottomModalHeight),
                         mapType: mapStore.mapType,
+                        zoomControlsEnabled: true,
+                        mapToolbarEnabled: false,
                         initialCameraPosition: mapStore.cameraPosition,
                         markers: mapStore.addLocationView
                             ? {mapStore.addLocationMarker}
