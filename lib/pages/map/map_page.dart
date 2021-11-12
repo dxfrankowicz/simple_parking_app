@@ -144,7 +144,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
   }
 
   void createInfoView(ParkingLocationModel parkingLocationModel, BuildContext context) {
-    _customInfoWindowController!.addInfoWindow!(
+    _customInfoWindowController.addInfoWindow!(
       Container(
         height: 80,
         child: Column(

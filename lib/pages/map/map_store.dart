@@ -11,7 +11,6 @@ import 'package:simple_parking_app/utils/firestore/firestore_service.dart';
 import 'package:simple_parking_app/utils/location_utils.dart';
 import 'package:simple_parking_app/utils/log/log.dart';
 import 'package:flutter/material.dart';
-import 'package:clippy_flutter/clippy_flutter.dart';
 
 part 'map_store.g.dart';
 
