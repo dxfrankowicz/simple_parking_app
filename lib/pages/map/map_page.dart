@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,10 +26,11 @@ class MapPage extends StatefulWidget {
 class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
   MapStore mapStore = getIt<MapStore>();
 
-  double bottomModalHeight = 0;
+  double? bottomModalHeight;
   double infoViewHeight = 80;
 
-  final CustomInfoWindowController _customInfoWindowController = CustomInfoWindowController();
+  final CustomInfoWindowController _customInfoWindowController =
+      CustomInfoWindowController();
 
   final RoundedLoadingButtonController _btnController = RoundedLoadingButtonController();
   List<ReactionDisposer> _disposers = [];
@@ -45,7 +48,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
         Future.delayed(Duration(seconds: 1)).then((value) => _btnController.reset());
       }
     }));
-    _disposers.add(reaction((_)=> mapStore.addLocationView, (x){
+    _disposers.add(reaction((_) => mapStore.addLocationView, (x) {
       setState(() {
         if (mapStore.addLocationView)
           bottomModalHeight = MediaQuery.of(context).size.height / 2.25;
@@ -64,8 +67,10 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    if (bottomModalHeight == null)
+      bottomModalHeight = MediaQuery.of(context).size.height / 8;
     return Observer(
-      builder: (_){
+      builder: (_) {
         return PARKINGScaffold.get(
           context,
           resizeToAvoidBottomInset: true,
@@ -75,19 +80,23 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                 stream: FirestoreService.getStream(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData)
-                    mapStore.updateMarkers(snapshot.data!.docs, _customInfoWindowController,
+                    mapStore
+                        .updateMarkers(snapshot.data!.docs, _customInfoWindowController,
                             (parkingLocationModel) {
-                          setState(() {
-                            createInfoView(parkingLocationModel, context);
-                          });
-                        });
+                      setState(() {
+                        createInfoView(parkingLocationModel, context);
+                      });
+                    });
                   else
                     log.info("No data");
                   return Observer(
                     builder: (_) {
                       return GoogleMap(
-                        padding: EdgeInsets.only(bottom: bottomModalHeight),
+                        padding: EdgeInsets.only(bottom: bottomModalHeight!),
                         mapType: mapStore.mapType,
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: true,
+                        zoomControlsEnabled: false,
                         initialCameraPosition: mapStore.cameraPosition,
                         markers: mapStore.addLocationView
                             ? {mapStore.addLocationMarker}
@@ -116,7 +125,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
               ),
               Align(alignment: Alignment.bottomCenter, child: getBottomModal()),
               AnimatedPositioned(
-                bottom: bottomModalHeight - 6,
+                bottom: bottomModalHeight! - 6,
                 left: MediaQuery.of(context).size.width / 4,
                 duration: Duration(milliseconds: 500),
                 child: Container(
@@ -137,24 +146,14 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                 ),
               ),
               Positioned(
-                top: 12,
-                right: 12,
-                child: Column(
-                  children: [
-                    FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      child: Icon(Icons.my_location_rounded, color: Colors.black),
-                      onPressed: () => mapStore.getLocationAndInit.call(),
-                    ),
-                    SizedBox(height: 8),
-                    FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      child: Icon(Icons.layers, color: Colors.black),
-                      onPressed: () => mapStore.switchMapType(),
-                    ),
-                  ],
+                top: Platform.isIOS ? 12 : null,
+                bottom: Platform.isIOS ? null : 12 + bottomModalHeight!,
+                right: 8,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                  child: Icon(Icons.layers, color: Colors.black),
+                  onPressed: () => mapStore.switchMapType(),
                 ),
               ),
             ],
