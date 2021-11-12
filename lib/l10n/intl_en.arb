@@ -1,3 +1,8 @@
 {
-  "addParkingLocation": "Add parking location"
+  "addParkingLocation": "Add parking location",
+  "name": "Name",
+  "description": "Description",
+  "addNewLocation": "Add mew location",
+  "saveLocation": "Save location",
+  "search": "Search"
 }

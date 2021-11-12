@@ -11,7 +11,6 @@ import 'package:simple_parking_app/utils/di/di.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:simple_parking_app/utils/firestore/firestore_service.dart';
 import 'package:simple_parking_app/utils/log/log.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -165,7 +164,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                               filled: true,
                               prefixIcon: Icon(Icons.search_rounded),
                               hintStyle: TextStyle(color: Colors.grey[800]),
-                              labelText: "Wyszukaj",
+                              labelText: S.current.search,
                               fillColor: Colors.white70),
                         ),
                       )
@@ -175,7 +174,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                             child: AutoSizeText(
-                              "Dodaj nową lokalizację",
+                              S.current.addParkingLocation,
                               maxLines: 1,
                               style: Theme.of(context).textTheme.subtitle1,
                             ),
@@ -190,7 +189,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                                 ),
                                 filled: true,
                                 hintStyle: TextStyle(color: Colors.grey[800]),
-                                labelText: "Nazwa",
+                                labelText: S.current.name,
                                 fillColor: Colors.white70),
                           ),
                           SizedBox(height: 8),
@@ -203,7 +202,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                                 ),
                                 filled: true,
                                 hintStyle: TextStyle(color: Colors.grey[800]),
-                                labelText: "Opis",
+                                labelText: S.current.description,
                                 fillColor: Colors.white70),
                           ),
                           SizedBox(height: 8),
@@ -236,7 +235,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                                 mapStore.addNewLocation();
                               },
                               icon: Icon(Icons.add),
-                              label: Text("Zapisz lokalizację"),
+                              label: Text(S.current.saveLocation),
                             ),
                           ),
                         ],

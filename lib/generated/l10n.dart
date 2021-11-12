@@ -59,6 +59,56 @@ class S {
       args: [],
     );
   }
+
+  /// `Name`
+  String get name {
+    return Intl.message(
+      'Name',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message(
+      'Description',
+      name: 'description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add mew location`
+  String get addNewLocation {
+    return Intl.message(
+      'Add mew location',
+      name: 'addNewLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save location`
+  String get saveLocation {
+    return Intl.message(
+      'Save location',
+      name: 'saveLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
