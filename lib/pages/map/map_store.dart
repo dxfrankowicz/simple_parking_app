@@ -67,6 +67,9 @@ abstract class _MapStoreBase with Store {
   @action
   Future getLocationAndInit() async {
     isWaitingForLocalization = true;
+    if(icon==null)
+      icon = await BitmapDescriptor.fromAssetImage(
+          ImageConfiguration(devicePixelRatio: 2.5), 'assets/parking_marker.png');
     var location = await getCurrentLocation();
     if (location != null)
       cameraPosition = CameraPosition(
@@ -126,17 +129,16 @@ abstract class _MapStoreBase with Store {
   }
 
   ParkingLocationModel? selectedParkingLocation;
+  BitmapDescriptor? icon;
 
   @action
   addMarker(ParkingLocationModel parkingLocationModel,
       {required CustomInfoWindowController customInfoWindowController,
       required Function(ParkingLocationModel model) showInfoView}) async {
-    var icon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5), 'assets/parking_marker.png');
     var marker = Marker(
         position: LatLng(parkingLocationModel.geolocation!.latitude,
             parkingLocationModel.geolocation!.longitude),
-        icon: icon,
+        icon: icon!,
         onTap: () {
           showInfoView.call(parkingLocationModel);
         },

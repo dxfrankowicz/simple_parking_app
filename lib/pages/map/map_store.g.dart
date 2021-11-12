@@ -229,7 +229,7 @@ mixin _$MapStore on _MapStoreBase, Store {
   @override
   dynamic switchAddLocationView() {
     final _$actionInfo = _$_MapStoreBaseActionController.startAction(
-        name: '_MapStoreBase.switchToAddLocationView');
+        name: '_MapStoreBase.switchAddLocationView');
     try {
       return super.switchAddLocationView();
     } finally {
