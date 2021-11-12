@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:simple_parking_app/models/parking_location.dart';
+import 'package:simple_parking_app/utils/buttons/rounded_loading_button.dart';
 import 'package:simple_parking_app/utils/firestore/firestore_service.dart';
 import 'package:simple_parking_app/utils/location_utils.dart';
 import 'package:simple_parking_app/utils/log/log.dart';
@@ -60,6 +61,9 @@ abstract class _MapStoreBase with Store {
   @observable
   bool addLocationNameEmpty = false;
 
+  @observable
+  LoadingState addNewLocationStatus = LoadingState.idle;
+
   @action
   Future getLocationAndInit() async {
     isWaitingForLocalization = true;
@@ -94,7 +98,7 @@ abstract class _MapStoreBase with Store {
   }
 
   @action
-  switchToAddLocationView() {
+  switchAddLocationView() {
     addLocationView = !addLocationView;
     if (!addLocationView) {
       addLocationModel = ParkingLocationModel.empty();
@@ -125,8 +129,8 @@ abstract class _MapStoreBase with Store {
 
   @action
   addMarker(ParkingLocationModel parkingLocationModel,
-      {CustomInfoWindowController? customInfoWindowController,
-      Function(ParkingLocationModel model)? showInfoView}) async {
+      {required CustomInfoWindowController customInfoWindowController,
+      required Function(ParkingLocationModel model) showInfoView}) async {
     var icon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5), 'assets/parking_marker.png');
     var marker = Marker(
@@ -134,7 +138,7 @@ abstract class _MapStoreBase with Store {
             parkingLocationModel.geolocation!.longitude),
         icon: icon,
         onTap: () {
-          showInfoView!.call(parkingLocationModel);
+          showInfoView.call(parkingLocationModel);
         },
         markerId: MarkerId((markers.length + 1).toString()));
     markers.add(marker);
@@ -143,8 +147,8 @@ abstract class _MapStoreBase with Store {
   @action
   updateMarkers(
       List<DocumentSnapshot> documentList,
-      CustomInfoWindowController? customInfoWindowController,
-      Function(ParkingLocationModel model)? showInfoView) {
+      CustomInfoWindowController customInfoWindowController,
+      Function(ParkingLocationModel model) showInfoView) {
     markers.clear();
     documentList.forEach((DocumentSnapshot document) {
       try {
@@ -176,12 +180,24 @@ abstract class _MapStoreBase with Store {
 
   @action
   addNewLocation() async {
-    if (validateNewLocationName())
+    addNewLocationStatus = LoadingState.loading;
+    if (!validateNewLocationName()) {
       FirestoreService.addNewParkingLocation(ParkingLocationModel(
-          addLocationModel.name,
-          addLocationModel.description,
-          addLocationModel.ranking,
-          GeoPoint(addLocationMarker.position.latitude,
-              addLocationMarker.position.longitude)));
+              addLocationModel.name,
+              addLocationModel.description,
+              addLocationModel.ranking,
+              GeoPoint(addLocationMarker.position.latitude,
+                  addLocationMarker.position.longitude)))
+          .then((value) {
+        addNewLocationStatus = LoadingState.success;
+        Future.delayed(Duration(seconds: 1))
+            .then((value) => switchAddLocationView());
+      }).catchError((onError) {
+        addNewLocationStatus = LoadingState.error;
+      });
+    } else {
+      Future.delayed(Duration(seconds: 1))
+          .then((value) => addNewLocationStatus = LoadingState.error);
+    }
   }
 }

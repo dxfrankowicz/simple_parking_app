@@ -148,6 +148,23 @@ mixin _$MapStore on _MapStoreBase, Store {
     });
   }
 
+  final _$addNewLocationStatusAtom =
+      Atom(name: '_MapStoreBase.addNewLocationStatus');
+
+  @override
+  LoadingState get addNewLocationStatus {
+    _$addNewLocationStatusAtom.reportRead();
+    return super.addNewLocationStatus;
+  }
+
+  @override
+  set addNewLocationStatus(LoadingState value) {
+    _$addNewLocationStatusAtom.reportWrite(value, super.addNewLocationStatus,
+        () {
+      super.addNewLocationStatus = value;
+    });
+  }
+
   final _$getLocationAndInitAsyncAction =
       AsyncAction('_MapStoreBase.getLocationAndInit');
 
@@ -179,8 +196,8 @@ mixin _$MapStore on _MapStoreBase, Store {
 
   @override
   Future addMarker(ParkingLocationModel parkingLocationModel,
-      {CustomInfoWindowController? customInfoWindowController,
-      Function(ParkingLocationModel)? showInfoView}) {
+      {required CustomInfoWindowController customInfoWindowController,
+      required dynamic Function(ParkingLocationModel) showInfoView}) {
     return _$addMarkerAsyncAction.run(() => super.addMarker(
         parkingLocationModel,
         customInfoWindowController: customInfoWindowController,
@@ -210,11 +227,11 @@ mixin _$MapStore on _MapStoreBase, Store {
   }
 
   @override
-  dynamic switchToAddLocationView() {
+  dynamic switchAddLocationView() {
     final _$actionInfo = _$_MapStoreBaseActionController.startAction(
         name: '_MapStoreBase.switchToAddLocationView');
     try {
-      return super.switchToAddLocationView();
+      return super.switchAddLocationView();
     } finally {
       _$_MapStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -256,8 +273,8 @@ mixin _$MapStore on _MapStoreBase, Store {
   @override
   dynamic updateMarkers(
       List<DocumentSnapshot<Object?>> documentList,
-      CustomInfoWindowController? customInfoWindowController,
-      Function(ParkingLocationModel)? showInfoView) {
+      CustomInfoWindowController customInfoWindowController,
+      dynamic Function(ParkingLocationModel) showInfoView) {
     final _$actionInfo = _$_MapStoreBaseActionController.startAction(
         name: '_MapStoreBase.updateMarkers');
     try {
@@ -301,7 +318,8 @@ markers: ${markers},
 addLocationMarker: ${addLocationMarker},
 addLocationModel: ${addLocationModel},
 addLocationView: ${addLocationView},
-addLocationNameEmpty: ${addLocationNameEmpty}
+addLocationNameEmpty: ${addLocationNameEmpty},
+addNewLocationStatus: ${addNewLocationStatus}
     ''';
   }
 }
