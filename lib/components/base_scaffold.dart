@@ -3,21 +3,21 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:simple_parking_app/constants/strings.dart';
 
-class PARKINGScaffold {
+class BaseScaffold {
   static Widget get(
     BuildContext context, {
-    appBar,
-    body,
-    floatingActionButton,
-    floatingActionButtonLocation,
-    floatingActionButtonAnimator,
-    persistentFooterButtons,
-    drawer,
-    endDrawer,
-    botNavBar,
-    bottomSheet,
-    backgroundColor,
-    scaffoldKey,
+    PreferredSizeWidget? appBar,
+    Widget? body,
+    Widget? floatingActionButton,
+    FloatingActionButtonLocation? floatingActionButtonLocation,
+    FloatingActionButtonAnimator? floatingActionButtonAnimator,
+    List<Widget>? persistentFooterButtons,
+    Widget? drawer,
+    Widget? endDrawer,
+    Widget? botNavBar,
+    Widget? bottomSheet,
+    Color? backgroundColor,
+    GlobalKey? scaffoldKey,
     Widget? title,
     bool centerTitle = true,
     bool? resizeToAvoidBottomInset,
@@ -32,7 +32,7 @@ class PARKINGScaffold {
         floatingActionButtonAnimator: floatingActionButtonAnimator,
         endDrawer: endDrawer,
         appBar: appBar ??
-            PARKINGScaffold.appBar(context,
+            BaseScaffold.appBar(context,
                 actions: actions ?? [],
                 title: title ?? Text(Strings.APP_NAME),
                 centerTitle: centerTitle,
@@ -59,32 +59,31 @@ class PARKINGScaffold {
             children: [
               title != null
                   ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: title)
+                      padding: const EdgeInsets.symmetric(horizontal: 8), child: title)
                   : Container()
             ],
           ),
         ),
-        elevation: elevation ??
-            (Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0),
+        elevation:
+            elevation ?? (Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0),
         actions: actions,
       );
 }
 
 //ignore: must_be_immutable
 class AppScaffold extends StatefulWidget {
-  var appBar;
-  var body;
-  var floatingActionButton;
-  var floatingActionButtonLocation;
-  var floatingActionButtonAnimator;
-  var persistentFooterButtons;
-  var drawer;
-  var endDrawer;
-  var botNavBar;
-  var bottomSheet;
-  var backgroundColor;
-  var scaffoldKey;
+  PreferredSizeWidget? appBar;
+  Widget? body;
+  Widget? floatingActionButton;
+  FloatingActionButtonLocation? floatingActionButtonLocation;
+  FloatingActionButtonAnimator? floatingActionButtonAnimator;
+  List<Widget>? persistentFooterButtons;
+  Widget? drawer;
+  Widget? endDrawer;
+  Widget? botNavBar;
+  Widget? bottomSheet;
+  Color? backgroundColor;
+  GlobalKey? scaffoldKey;
   Widget? title;
   bool centerTitle = true;
   List<Widget>? actions;
@@ -130,7 +129,7 @@ class _AppScaffoldState extends State<AppScaffold> {
         endDrawer: widget.endDrawer,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset ?? false,
         appBar: widget.appBar ??
-            PARKINGScaffold.appBar(context,
+            BaseScaffold.appBar(context,
                 actions: widget.actions ?? [],
                 title: widget.title ?? Container(),
                 centerTitle: widget.centerTitle),

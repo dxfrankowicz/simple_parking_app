@@ -71,7 +71,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
       bottomModalHeight = MediaQuery.of(context).size.height / 8;
     return Observer(
       builder: (_) {
-        return PARKINGScaffold.get(
+        return BaseScaffold.get(
           context,
           resizeToAvoidBottomInset: true,
           body: Stack(
@@ -101,9 +101,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                         markers: mapStore.addLocationView
                             ? {mapStore.addLocationMarker}
                             : mapStore.markers,
-                        onTap: (position) {
-                          _customInfoWindowController.hideInfoWindow!();
-                        },
+                        onTap: (position) => _customInfoWindowController.hideInfoWindow!(),
                         onMapCreated: (GoogleMapController controller) {
                           mapStore.controller.complete(controller);
                           _customInfoWindowController.googleMapController = controller;
@@ -139,7 +137,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                             ? Icons.clear
                             : Icons.add_location_alt_outlined,
                         color: Colors.white),
-                    onPressed: mapStore.switchAddLocationView(),
+                    onPressed: mapStore.switchAddLocationView,
                   ),
                 ),
               ),
