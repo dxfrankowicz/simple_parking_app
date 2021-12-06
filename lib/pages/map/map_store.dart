@@ -21,7 +21,7 @@ class MapStore extends _MapStoreBase with _$MapStore {
 }
 
 abstract class _MapStoreBase with Store {
-  final Logger logger = new Logger("MapStore");
+  final logger = new Logger("MapStore");
 
   _MapStoreBase();
 
@@ -139,9 +139,7 @@ abstract class _MapStoreBase with Store {
         position: LatLng(parkingLocationModel.geolocation!.latitude,
             parkingLocationModel.geolocation!.longitude),
         icon: icon!,
-        onTap: () {
-          showInfoView.call(parkingLocationModel);
-        },
+        onTap: () => showInfoView.call(parkingLocationModel),
         markerId: MarkerId((markers.length + 1).toString()));
     markers.add(marker);
   }

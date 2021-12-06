@@ -24,7 +24,7 @@ class MapPage extends StatefulWidget {
 }
 
 class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
-  MapStore mapStore = getIt<MapStore>();
+  final mapStore = getIt<MapStore>();
 
   double? bottomModalHeight;
   double infoViewHeight = 80;
@@ -139,9 +139,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                             ? Icons.clear
                             : Icons.add_location_alt_outlined,
                         color: Colors.white),
-                    onPressed: () {
-                      mapStore.switchAddLocationView();
-                    },
+                    onPressed: mapStore.switchAddLocationView(),
                   ),
                 ),
               ),
@@ -153,7 +151,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                   backgroundColor: Colors.white,
                   materialTapTargetSize: MaterialTapTargetSize.padded,
                   child: Icon(Icons.layers, color: Colors.black),
-                  onPressed: () => mapStore.switchMapType(),
+                  onPressed: mapStore.switchMapType,
                 ),
               ),
             ],
@@ -334,9 +332,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                                           ? Colors.amber
                                           : Colors.black,
                                       size: 40),
-                                  onTap: () {
-                                    mapStore.setRankForNewLocation(index + 1);
-                                  },
+                                  onTap: () => mapStore.setRankForNewLocation(index + 1),
                                 ),
                               )),
                           Observer(
@@ -350,9 +346,7 @@ class MapPageState extends State<MapPage> with SingleTickerProviderStateMixin {
                               height: 50,
                               color: Theme.of(context).appBarTheme.backgroundColor,
                               width: MediaQuery.of(context).size.width,
-                              onPressed: () {
-                                mapStore.addNewLocation();
-                              },
+                              onPressed: mapStore.addNewLocation,
                             ),
                           ),
                         ],
